@@ -1,4 +1,4 @@
-package clara;
+package com.happy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Snake extends TimerTask implements KeyListener {
 
-    int height = 300; int width = 400;   //pixels
+    int height = 600; int width = 800;   //pixels
     int squareSize = 50;
     
     int speed = 300;   // 300 = update every 300 ms.  Larger number = slower game
@@ -73,13 +73,13 @@ public class Snake extends TimerTask implements KeyListener {
             g.fillRect(0, 0, width, height);
 
             if (gameOver > 6) {                 // If gameOver indicates game is won, display message
-                g.setColor(Color.GREEN);
+                g.setColor(Color.ORANGE);
                 g.drawString(">-o~~~~~~~~~~~~~  SNAKE  ~~~~~~~~~~~~~o-<", 50, 50);    //  "art"
                 g.drawString("!!!! YOU WON !!! score: " + score, 100, 100);
             }
 
             else if (gameOver > 0 ) {          // If gameOver indicates game is over (won, lost, whatever) display score and countdown to next game
-                g.setColor(Color.GREEN);
+                g.setColor(Color.RED);
                 g.drawString(">-o~~~~~~~~~~~~~  SNAKE  ~~~~~~~~~~~~~o-<", 50, 50);
 
                 g.drawString("GAME OVER score: " + score, 120, 100);
@@ -88,10 +88,10 @@ public class Snake extends TimerTask implements KeyListener {
             }
 
             else {                             // Game is not over. Draw snake and kibble, wherever they are.
-                g.setColor(Color.BLUE);
+                g.setColor(Color.YELLOW);
                 g.fillRect(kibble[0] * squareSize, kibble[1] * squareSize, squareSize, squareSize);
 
-                g.setColor(Color.RED);
+                g.setColor(Color.cyan);
                 for (int[] square : snake) {
                     g.fillRect(square[0] * squareSize, square[1] * squareSize, squareSize, squareSize);
                 }
@@ -137,8 +137,14 @@ public class Snake extends TimerTask implements KeyListener {
             headX = newHead[0];    //Convenience variables for new head x and y
             headY = newHead[1];
 
-            if ((headX < 0 || headX > xSquares) || (headY < 0 || headY > ySquares)) {   //Head outside board? Snake hit wall, game over
-                gameOver = clockTicksToRestart;
+            if (headX < 0 || headX > xSquares){  //Head outside board? Snake hit wall, game over
+                newHead[0] = (xSquares + headX) % xSquares;
+                //gameOver = clockTicksToRestart;
+                return;
+            }
+            if(headY < 0 || headY > ySquares){
+                newHead[1] = (ySquares + headY) % ySquares;
+                System.out.println(newHead[1]);
                 return;
             }
 
